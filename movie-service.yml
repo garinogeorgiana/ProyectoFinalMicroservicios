@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: movie-service
+  rabbitmq:
+    username: guest
+    password: guest
+    host: rabbitmq
+    port: 5672
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db-mysql-movie:3306/movie_database
+    username: root
+    password: root
+  sql:
+    init:
+      mode: always
+      dataLocations: classpath:/movie-service.sql
+  jpa:
+    deferDatasourceInitialization: true
+    hibernate:
+      ddlAuto: create-drop
+  mvc:
+    log-request-details: true
+  zipkin:
+    base-url: http://zipkin:9411/
+    enabled: true
+
+queue:
+  movie:
+    name: MovieQueue
+
+server:
+  port: 8081
+
+eureka:
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://eureka-service:8761/eureka
+    instance:
+      preferIpAddress: true

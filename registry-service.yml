@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: registry-service
+  zipkin:
+    base-url: http://zipkin:9411/
+    enabled: true
+
+server:
+  port: 8761
+
+eureka:
+  server:
+    enableSelfPreservation: false
+  client:
+    fetchRegistry: false
+    registerWithEureka: false
+    serviceUrl:
+      defaultZone: http://eureka-service:8761/eureka
+    instance:
+      preferIpAddress: true

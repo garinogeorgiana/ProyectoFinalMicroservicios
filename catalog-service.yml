@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: catalog-service
+  rabbitmq:
+    username: guest
+    password: guest
+    host: rabbitmq
+    port: 5672
+  data:
+    mongodb:
+      host: db-mongo-catalog
+      port: 27017
+      database: catalog_database
+  mvc:
+    log-request-details: true
+  zipkin:
+    base-url: http://zipkin:9411/
+    enabled: true
+
+queue:
+  movie:
+    name: MovieQueue
+  serie:
+    name: SerieQueue
+
+
+server:
+  port: 8091
+
+eureka:
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://eureka-service:8761/eureka
+    instance:
+      preferIpAddress: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      movies:
+        allowHealthIndicatorToFail: false
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15000
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+      series:
+        allowHealthIndicatorToFail: false
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15000
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+  retry:
+    instances:
+      movies:
+        waitDuration: 1000
+        maxAttempts: 3
+        retryExceptions:
+          - feign.FeignException$InternalServerError
+      series:
+        waitDuration: 1000
+        maxAttempts: 3
+        retryExceptions:
+          - feign.FeignException$InternalServerError
